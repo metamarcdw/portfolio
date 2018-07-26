@@ -1,0 +1,18 @@
+
+.mynav {
+    min-height: 5em;
+    font-size: 1.25em;
+    background-color: black;
+}
+
+.navlink {
+    color: aliceblue;
+    font-weight: bolder;
+}
+
+.name {
+    font-size: 2em;
+    font-weight: bold;
+    border: 5px solid black;
+    padding: 0.5em;
+}
