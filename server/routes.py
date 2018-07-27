@@ -1,6 +1,7 @@
-from flask import render_template
+from flask import render_template, flash
 from server import app
 
 @app.route("/")
 def index():
-    return render_template("test.html", title="Portfolio")
+    flash("This is a flash message.")  # TODO: Remove example flash
+    return render_template("index.html", title="Portfolio")
