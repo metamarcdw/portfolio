@@ -1,9 +1,10 @@
 from flask import Flask
-
-app = Flask(__name__)
-app.secret_key = "asecret"
+from server.routes import portfolio
 
 def create_app():
-    return app
+    app = Flask(__name__)
+    app.config["DEBUG"] = True
+    app.secret_key = "asecret"
 
-from server import routes
+    app.register_blueprint(portfolio)
+    return app
