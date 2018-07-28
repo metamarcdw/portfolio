@@ -4,4 +4,20 @@
 <div class="jumbotron d-flex justify-content-center">
     <h1 class="name">MARCDW'S PORTFOLIO</h1>
 </div>
+<div class="d-flex flex-wrap justify-content-center">
+    {% for project in projects %}
+    <div class="card mycard">
+        <img
+            class="card-img-top"
+            src="{{ url_for('static', filename='images/' + project.imgfile) }}"
+            alt="Card image cap"
+        >
+        <div class="card-body">
+            <h5 class="card-title">{{ project.title }}</h5>
+            <p class="card-text">{{ project.description }}</p>
+            <a href="{{ project.url }}" class="btn btn-secondary">Go</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

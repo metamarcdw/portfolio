@@ -5,9 +5,20 @@
     background-color: black;
 }
 
+.navgroup {
+    min-width: 60%;
+}
+
 .navlink {
-    color: aliceblue;
+    color: white;
     font-weight: bolder;
+    margin-left: 3em;
+    margin-right: 3em;
+    text-align: center;
+}
+
+.navlink:hover {
+    color: gray !important;
 }
 
 .name {
@@ -15,4 +26,17 @@
     font-weight: bold;
     border: 5px solid black;
     padding: 0.5em;
+}
+
+.mycard {
+    margin: 1em;
+    width: 15rem;
+}
+
+.myfoot {
+    color: white;
+}
+
+.copyright {
+    margin-top: 1em;
 }

@@ -18,9 +18,11 @@
     <body>
         <div class="container">
             <nav class="nav justify-content-center align-items-center mynav">
-                <a class="nav-link active navlink" href="#">Home</a>
-                <a class="nav-link navlink" href="#">Contact</a>
-                <a class="nav-link navlink" href="#">Projects</a>
+                <div class="d-flex justify-content-around flex-wrap navgroup">
+                    <a class="nav-link active navlink" href="#">Home</a>
+                    <a class="nav-link navlink" href="#">Contact</a>
+                    <a class="nav-link navlink" href="#">Projects</a>
+                </div>
             </nav>
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
@@ -37,6 +39,10 @@
 
             {% block bodyblock %}
             {% endblock %}
+
+            <footer class="d-flex justify-content-center mynav myfoot">
+                <span class="copyright">Copyright © 2018 | Marc D. Wood | all sprites reserved</span>
+            </footer>
         </div>
 
         <script
