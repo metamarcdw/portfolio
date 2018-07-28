@@ -1,45 +1,53 @@
 
 projects = [
     {
+        "id": 0,
         "title": "Nowallet",
         "imgfile": "nowallet.png",
-        "url": "nowallet",
         "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. " +
                         "Similique ipsam cupiditate voluptates beatae vitae iusto ut"
     },
     {
+        "id": 1,
         "title": "Component.py",
         "imgfile": "component.jpg",
-        "url": "component",
         "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. " +
                         "Similique ipsam cupiditate voluptates beatae vitae iusto ut"
     },
     {
+        "id": 2,
         "title": "Python/Fullstack/Transcrypt",
         "imgfile": "fullstack.png",
-        "url": "fullstack",
         "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. " +
                         "Similique ipsam cupiditate voluptates beatae vitae iusto ut"
     },
     {
+        "id": 3,
         "title": "CHIP8",
         "imgfile": "chip8.png",
-        "url": "chip8",
         "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. " +
                         "Similique ipsam cupiditate voluptates beatae vitae iusto ut"
     },
     {
+        "id": 4,
         "title": "Bitmessage over I2P",
         "imgfile": "bitmessage.png",
-        "url": "bitmessage",
         "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. " +
                         "Similique ipsam cupiditate voluptates beatae vitae iusto ut"
     },
     {
+        "id": 5,
         "title": "METAmarket",
         "imgfile": "mm_logo.jpg",
-        "url": "metamarket",
         "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. " +
                         "Similique ipsam cupiditate voluptates beatae vitae iusto ut"
     }
+]
+
+rights = [
+    "Dwights",
+    "sprites",
+    "kites",
+    "Lite-Brites",
+    "knights"
 ]
