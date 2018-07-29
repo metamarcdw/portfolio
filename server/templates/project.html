@@ -1,5 +1,15 @@
 {% extends "base.html" %}
 
 {% block bodyblock %}
-<h1>{{ data.title }}</h1>
+<div class="card d-flex align-items-center">
+    <img
+        class="card-img-top bigcard-img"
+        src="{{ url_for('static', filename='images/' + project.imgfile) }}"
+        alt="Card image cap">
+    <div class="card-body">
+        <h5 class="card-title">{{ project.title }}</h5>
+        <p class="card-text">{{ project.long_desc }}</p>
+        <a href="{{ project.github_url }}" class="card-link">GitHub Repo</a>
+    </div>
+</div>
 {% endblock %}

@@ -30,7 +30,7 @@
 
 .mycard {
     margin: 1em;
-    width: 15rem;
+    max-width: 15rem;
 }
 
 .myfoot {
@@ -39,4 +39,8 @@
 
 .copyright {
     margin-top: 1em;
+}
+
+.bigcard-img {
+    max-width: 25em;
 }

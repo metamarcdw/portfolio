@@ -14,4 +14,4 @@ def index():
 @portfolio.route("/projects/<int:id>")
 def projects_view(id):
     return render_template(
-        "project.html", data=projects[id], right=random.choice(rights))
+        "project.html", project=projects[id], right=random.choice(rights))
