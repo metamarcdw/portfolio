@@ -30,7 +30,7 @@
 
 .mycard {
     margin: 1em;
-    max-width: 15rem;
+    max-width: 15em;
 }
 
 .myfoot {
@@ -41,6 +41,6 @@
     margin-top: 1em;
 }
 
-.bigcard-img {
-    max-width: 25em;
+.abandoned {
+    color: red;
 }

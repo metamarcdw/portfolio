@@ -3,13 +3,22 @@
 {% block bodyblock %}
 <div class="card d-flex align-items-center">
     <img
-        class="card-img-top bigcard-img"
+        class="card-img-top mycard"
         src="{{ url_for('static', filename='images/' + project.imgfile) }}"
         alt="Card image cap">
     <div class="card-body">
         <h5 class="card-title">{{ project.title }}</h5>
         <p class="card-text">{{ project.long_desc }}</p>
+
+        {% if project.abandoned %}
+        <p class="abandoned">** Abandoned</p>
+        {% endif %}
+
+        {% if project.website %}
+        <a href="{{ project.website }}" class="card-link">Website</a>
+        {% endif %}
         <a href="{{ project.github_url }}" class="card-link">GitHub Repo</a>
+        <a href="#" class="card-link" id="backlink">Go Back</a>
     </div>
 </div>
 {% endblock %}

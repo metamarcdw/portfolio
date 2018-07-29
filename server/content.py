@@ -4,7 +4,9 @@ projects = [
         "id": 0,
         "title": "Nowallet",
         "imgfile": "nowallet.png",
+        "website": "http://nowallet.org",
         "github_url": "https://github.com/metamarcdw/nowallet",
+        "abandoned": False,
         "description": "This project is a secure Bitcoin brainwallet app that will ultimately be " +
                        "meant for desktop and mobile platforms.",
         "long_desc": "This project is a secure Bitcoin brainwallet app that will ultimately be " +
@@ -18,6 +20,7 @@ projects = [
         "title": "Component.py",
         "imgfile": "component.jpg",
         "github_url": "https://github.com/metamarcdw/Component.py",
+        "abandoned": False,
         "description": "Enables ReactJS development using pure Python syntax.",
         "long_desc": "A Python module written for use with the Transcrypt Python->JavaScript " +
                      "transpiler. Enables ReactJS development using pure Python syntax."
@@ -27,6 +30,7 @@ projects = [
         "title": "Python/Fullstack/Transcrypt",
         "imgfile": "fullstack.png",
         "github_url": "https://github.com/metamarcdw/python-fullstack-transcrypt",
+        "abandoned": False,
         "description": "Example of React and Redux with Python using Transcrypt and Component.py.",
         "long_desc": "Example of React and Redux with Python using Transcrypt and Component.py. " +
                      "Also uses Flask-RESTPlus backend with SQLAlchemy and JWT-Extended."
@@ -36,6 +40,7 @@ projects = [
         "title": "CHIP8",
         "imgfile": "chip8.png",
         "github_url": "https://github.com/metamarcdw/chip8",
+        "abandoned": False,
         "description":
             "This is a CHIP8 interpreter written in Python 3 with a GUI built in PyQt4.",
         "long_desc": "This is a CHIP8 interpreter written in Python 3 with a GUI built in " +
@@ -50,6 +55,7 @@ projects = [
         "title": "Bitmessage over I2P",
         "imgfile": "bitmessage.png",
         "github_url": "https://github.com/metamarcdw/PyBitmessage-I2P",
+        "abandoned": True,
         "description": "This is a fork of PyBitmessage that runs natively over I2P (ONLY) It " +
                        "requires a running I2P router with SAM Bridge activated.",
         "long_desc": "This is a fork of PyBitmessage that runs natively over I2P (ONLY) It " +
@@ -66,6 +72,7 @@ projects = [
         "title": "METAmarket",
         "imgfile": "mm_logo.jpg",
         "github_url": "https://github.com/metamarcdw/metamarket",
+        "abandoned": True,
         "description": "METAmarket is an open source protocol and reference client specifying a " +
                      "trustless federated marketplace which uses Bitcoin as a universal currency.",
         "long_desc": "METAmarket is an open source protocol and reference client specifying a " +
@@ -76,6 +83,13 @@ projects = [
                      "malleability are mitigated through the use of a federated reputation model."
     }
 ]
+
+contact_info = {
+    "email": "marcdw87@gmail.com",
+    "angellist": "https://angel.co/metamarcdw",
+    "linkedin": "https://www.linkedin.com/in/marc-wood-6a5959122",
+    "twitter": "https://twitter.com/metamarcdw"
+}
 
 rights = [
     "Dwights",

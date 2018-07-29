@@ -19,9 +19,9 @@
         <div class="container">
             <nav class="nav justify-content-center align-items-center mynav">
                 <div class="d-flex justify-content-around flex-wrap navgroup">
-                    <a class="nav-link active navlink" href="#">Home</a>
+                    <a class="nav-link active navlink" href="{{ url_for('simple_page.index') }}">Home</a>
+                    <a class="nav-link navlink" href="https://github.com/metamarcdw">GitHub Profile</a>
                     <a class="nav-link navlink" href="#">Contact</a>
-                    <a class="nav-link navlink" href="#">Projects</a>
                 </div>
             </nav>
             {% with messages = get_flashed_messages() %}
