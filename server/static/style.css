@@ -44,3 +44,9 @@
 .abandoned {
     color: red;
 }
+
+.myicons i {
+    font-size: 3em;
+    color: black;
+    margin: 0.5em;
+}

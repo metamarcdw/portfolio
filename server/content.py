@@ -88,6 +88,7 @@ contact_info = {
     "email": "marcdw87@gmail.com",
     "angellist": "https://angel.co/metamarcdw",
     "linkedin": "https://www.linkedin.com/in/marc-wood-6a5959122",
+    "github": "https://github.com/metamarcdw",
     "twitter": "https://twitter.com/metamarcdw"
 }
 

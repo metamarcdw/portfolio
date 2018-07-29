@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block bodyblock %}
+<div class="card d-flex align-items-center">
+    <img
+        class="card-img-top mycard"
+        src="{{ url_for('static', filename='images/head.jpg') }}"
+        alt="Card image cap">
+    <div class="card-body">
+        <h3>Marc D. Wood</h3>
+        <h5 class="card-title">Contact Info:</h5>
+        <p class="card-text d-flex justify-content-center flex-wrap myicons">
+            <a href="mailto:{{ contact.email }}"><i class="fas fa-envelope-square"></i></a>
+            <a href="{{ contact.angellist }}"><i class="fab fa-angellist"></i></a>
+            <a href="{{ contact.linkedin }}"><i class="fab fa-linkedin"></i></a>
+            <a href="{{ contact.github }}"><i class="fab fa-github"></i></a>
+            <a href="{{ contact.twitter }}"><i class="fab fa-twitter"></i></a>
+        </p>
+    </div>
+</div>
+{% endblock %}

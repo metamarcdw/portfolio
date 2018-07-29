@@ -1,7 +1,7 @@
 import random
 
 from flask import Blueprint, render_template, flash
-from server.content import projects, rights
+from server.content import projects, contact_info, rights
 
 portfolio = Blueprint("portfolio", __name__, template_folder="templates")
 
@@ -25,4 +25,7 @@ def projects_view(id):
 
 @portfolio.route("/contact")
 def contact_view():
-    return render_template("contact.html")
+    return render_template("contact.html",
+                           title="Contact Me",
+                           contact=contact_info,
+                           right=random.choice(rights))
