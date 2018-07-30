@@ -28,6 +28,56 @@
                     <a class="nav-link navlink" href="{{ url_for('portfolio._portfolio') }}">Portfolio</a>
                     <a class="nav-link navlink" href="{{ url_for('portfolio.contact_view') }}">Contact</a>
                 </div>
+
+                <!-- Button trigger modal -->
+                {% if logged_in %}
+                <a href="{{ url_for('portfolio.logout') }}" class="btn btn-secondary fixed">Logout</a>
+                {% else %}
+                <button type="button" class="btn btn-secondary fixed" data-toggle="modal" data-target="#exampleModal">
+                    Login
+                </button>
+                {% endif %}
+                
+                <!-- Modal -->
+                <div
+                    class="modal fade"
+                    id="exampleModal"
+                    tabindex="-1"
+                    role="dialog"
+                    aria-labelledby="exampleModalLabel"
+                    aria-hidden="true"
+                >
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <form method="POST">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                        <div class="form-group">
+                                            <input
+                                                class="form-control"
+                                                name="username_input"
+                                                type="text"
+                                                placeholder="Username">
+                                            <input
+                                                class="form-control"
+                                                name="password_input"
+                                                type="password"
+                                                placeholder="Password">
+                                        </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Login</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </nav>
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
@@ -46,7 +96,12 @@
             {% endblock %}
 
             <footer class="d-flex justify-content-center mynav myfoot">
-                <span class="copyright">Copyright © 2018 | Marc D. Wood | all {{ right }} reserved</span>
+                <span class="copyright">Copyright © 2018 | Marc D. Wood | all 
+                    {% if right %}
+                        {{ right }}
+                    {% else %}
+                        rights
+                    {% endif %} reserved</span>
             </footer>
         </div>
 

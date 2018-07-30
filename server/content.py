@@ -89,6 +89,11 @@ projects = [
     }
 ]
 
+login_info = {
+    "username": "admin",
+    "password": "password"
+}
+
 contact_info = {
     "email": "marcdw87@gmail.com",
     "angellist": "https://angel.co/metamarcdw",
