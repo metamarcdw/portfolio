@@ -23,12 +23,17 @@ projects = [
         "abandoned": False,
         "description": "Enables ReactJS development using pure Python syntax.",
         "long_desc": "A Python module written for use with the Transcrypt Python->JavaScript " +
-                     "transpiler. Enables ReactJS development using pure Python syntax."
+                     "transpiler. Enables ReactJS development using pure Python syntax. From " +
+                     "the Transcrypt documentation: \"Transcrypt has exactly the same clear, " +
+                     "powerful syntax that Python is famous for, without the need for any " +
+                     "proprietary extensions. It precompiles to fast, readable JavaScript that " +
+                     "can be debugged from the Python source code using sourcemaps.\""
     },
     {
         "id": 2,
         "title": "Python/Fullstack/Transcrypt",
         "imgfile": "fullstack.png",
+        "website": "https://metamarcdw.github.io/python-fullstack-transcrypt",
         "github_url": "https://github.com/metamarcdw/python-fullstack-transcrypt",
         "abandoned": False,
         "description": "Example of React and Redux with Python using Transcrypt and Component.py.",

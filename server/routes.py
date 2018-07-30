@@ -7,9 +7,16 @@ portfolio = Blueprint("portfolio", __name__, template_folder="templates")
 
 
 @portfolio.route("/")
-def index():
+def home():
+    flash("<!-- TODO: Welcome guest. -->")
+    return render_template("home.html",
+                           title="Welcome",
+                           right=random.choice(rights))
+
+@portfolio.route("/portfolio")
+def _portfolio():
     flash("Thanks for visiting. Please make yourself comfortable :P")
-    return render_template("index.html",
+    return render_template("portfolio.html",
                            title="Portfolio",
                            projects=projects,
                            right=random.choice(rights))
