@@ -31,7 +31,10 @@
 
                 <!-- Button trigger modal -->
                 {% if logged_in %}
-                <a href="{{ url_for('portfolio.logout') }}" class="btn btn-secondary fixed">Logout</a>
+                <div class="fixed">
+                    <a href="{{ url_for('portfolio.logout') }}" class="btn btn-secondary">Logout</a>
+                    <a href="{{ url_for('portfolio.edit_project') }}" class="btn btn-primary">Edit</a>
+                </div>
                 {% else %}
                 <button type="button" class="btn btn-secondary fixed" data-toggle="modal" data-target="#exampleModal">
                     Login

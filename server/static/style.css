@@ -3,6 +3,7 @@
     min-height: 5em;
     font-size: 1.25em;
     background-color: black;
+    position: relative;
 }
 
 .navgroup {
@@ -53,7 +54,16 @@
 }
 
 .fixed {
-    position: fixed;
-    top: 1.5em;
-    right: 11%;
+    position: absolute;
+    top: 1em;
+    right: 1em;
+}
+
+.form-container {
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+.message-container {
+    margin: 3em !important;
 }

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block bodyblock %}
+<div class="container d-flex justify-content-center">
+    <div class="form-container">
+        <h3>Create a new Portfolio Project:</h3>
+        <form method="POST">
+            {{ form.csrf_token }}
+            {% for field in form.field_names %}
+            <div class="form-group row">
+                {{ form[field].label(class_="col-sm-4 col-form-label") }}
+                <div class="col-sm-8">
+                    {{ form[field](class_="form-control") }}
+                </div>
+            </div>
+            {% endfor %}
+            <button class="btn btn-secondary" type="submit">Submit</button>
+        </form>
+        {% if form.errors %}
+            {% for error in form.errors %}
+                <div class="abandoned">{{ error }}</div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
