@@ -15,10 +15,22 @@
         {% endif %}
 
         {% if project.website %}
-        <a href="{{ project.website }}" class="card-link"><i class="fas fa-globe"></i> Website</a>
+        <a
+            href="{{ project.website }}"
+            target="_blank"
+            class="card-link"
+        ><i class="fas fa-globe"></i> Website</a>
         {% endif %}
-        <a href="{{ project.github_url }}" class="card-link"><i class="fab fa-github"></i> GitHub Repo</a>
-        <a href="#" class="card-link" id="backlink"><i class="fas fa-arrow-left"></i> Go Back</a>
+        <a
+            href="{{ project.github_url }}"
+            target="_blank"
+            class="card-link"
+        ><i class="fab fa-github"></i> GitHub Repo</a>
+        <a
+            href="#"
+            class="card-link"
+            id="backlink"
+        ><i class="fas fa-arrow-left"></i> Go Back</a>
     </div>
 </div>
 {% endblock %}

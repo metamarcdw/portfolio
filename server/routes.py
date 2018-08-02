@@ -93,7 +93,7 @@ def edit_project(id=None):
             db.session.add(new_project)
             db.session.commit()
         flash("Edit was successful.")
-        return redirect(url_for("portfolio.home"))
+        return redirect(url_for("portfolio._portfolio"))
 
     return render_template("edit_project.html",
                            form=project_form,
