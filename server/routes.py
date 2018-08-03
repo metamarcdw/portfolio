@@ -1,10 +1,29 @@
 import random
-
 from flask import Blueprint, render_template, flash, request, redirect, url_for, abort
-from server.content import contact_info, rights, login_info
 
 portfolio = Blueprint("portfolio", __name__, template_folder="templates")
 logged_in = False
+
+login_info = {
+    "username": "admin",
+    "password": "password"
+}
+
+contact_info = {
+    "email": "marcdw87@gmail.com",
+    "angellist": "https://angel.co/metamarcdw",
+    "linkedin": "https://www.linkedin.com/in/marc-wood-6a5959122",
+    "github": "https://github.com/metamarcdw",
+    "twitter": "https://twitter.com/metamarcdw"
+}
+
+rights = [
+    "Dwights",
+    "sprites",
+    "kites",
+    "Lite-Brites",
+    "knights"
+]
 
 
 @portfolio.route("/", methods=["GET", "POST"])
