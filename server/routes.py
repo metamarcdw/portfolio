@@ -72,13 +72,13 @@ def new_project():
     project_form = ProjectForm()
     if request.method == "POST" and project_form.validate():
         project = Project(title=request.form["title"],
-                                imgfile=request.form["imgfile"],
-                                website=request.form["website"],
-                                github_url=request.form["github_url"],
-                                abandoned=request.form.get(
-                                    "abandoned") is not None,
-                                description=request.form["description"],
-                                long_desc=request.form["long_desc"])
+                          imgfile=request.form["imgfile"],
+                          website=request.form["website"],
+                          github_url=request.form["github_url"],
+                          abandoned=request.form.get(
+                              "abandoned") is not None,
+                          description=request.form["description"],
+                          long_desc=request.form["long_desc"])
         db.session.add(project)
         db.session.commit()
         flash("Project was created.")
@@ -101,6 +101,8 @@ def edit_project(id):
         abort(403)
 
     project = Project.query.filter_by(id=id).first()
+    if not project:
+        abort(404)
     project_form = ProjectForm(obj=project)
 
     if request.method == "POST" and project_form.validate():
@@ -120,11 +122,16 @@ def edit_project(id):
 def delete_project(id):
     from server import db
     from server.models import Project
+
     if not logged_in:
         abort(403)
+
     project = Project.query.filter_by(id=id).first()
+    if not project:
+        abort(404)
     db.session.delete(project)
     db.session.commit()
+
     flash("Delete was successful.")
     return redirect(url_for("portfolio._portfolio"))
 
