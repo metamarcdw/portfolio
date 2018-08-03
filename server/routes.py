@@ -128,7 +128,8 @@ def handle_login():
     if request.form["username_input"] == login_info["username"] and \
             request.form["password_input"] == login_info["password"]:
         logged_in = True
-        return redirect(url_for("portfolio.home"))
+        msg = "Login Successful."
     else:
-        flash("Login Failed.")
-        return redirect(url_for("portfolio.home"))
+        msg = "Login Failed."
+    flash(msg)
+    return redirect(url_for("portfolio.home"))
