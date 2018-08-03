@@ -1,13 +1,10 @@
+import os
+import json
 import random
 from flask import Blueprint, render_template, flash, request, redirect, url_for, abort
 
 portfolio = Blueprint("portfolio", __name__, template_folder="templates")
 logged_in = False
-
-login_info = {
-    "username": "admin",
-    "password": "password"
-}
 
 contact_info = {
     "email": "marcdw87@gmail.com",
@@ -25,13 +22,28 @@ rights = [
     "knights"
 ]
 
+secret_path = os.path.join(os.path.dirname(__file__), "login_info.json")
+try:
+    with open(secret_path, "r") as file_:
+        login_info = json.load(file_)
+except FileNotFoundError as e:
+    raise FileNotFoundError(
+        "\n * Login info file:" +
+        f"\n\t{secret_path}\n   does not exist.") from e
+
+keys = ("username", "password")
+if not login_info or not all([key in login_info for key in keys]):
+    raise ValueError(
+        "\n * Login info file:" +
+        f"\n\t{secret_path}\n   is not complete.")
+
 
 @portfolio.route("/", methods=["GET", "POST"])
 def home():
     if request.method == "POST":
         return handle_login()
     user = "MarcDW" if logged_in else "Guest"
-    flash(f"<!-- TODO: Welcome {user}. -->")
+    flash(f"<!-- TODO: Welcome {user}. Thanks for visiting. -->")
     return render_template("home.html",
                            title="Welcome",
                            right=random.choice(rights),
@@ -44,7 +56,6 @@ def _portfolio():
     if request.method == "POST":
         return handle_login()
     projects = Project.query.all()
-    flash("Thanks for visiting. Please make yourself comfortable :P")
     return render_template("portfolio.html",
                            title="Portfolio",
                            projects=projects,
