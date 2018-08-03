@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block bodyblock %}
+<div class="d-flex flex-column align-items-center error-container">
+    <img
+        class="mycard"
+        src="{{ url_for('static', filename='images/unicorn.jpg') }}"
+        alt="Unicorn">
+    <div>
+        <h3>Error ({{ status }})</h3>
+        <p>{{ error }}</p>
+    </div>
+</div>
+{% endblock %}

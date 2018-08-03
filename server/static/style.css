@@ -67,3 +67,7 @@
 .login-form {
     margin-top: 1em;
 }
+
+.error-container {
+    margin: 3em;
+}

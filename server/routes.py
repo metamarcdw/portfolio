@@ -154,3 +154,24 @@ def handle_login():
         msg = "Login Failed."
     flash(msg)
     return redirect(url_for("portfolio.home"))
+
+
+@portfolio.errorhandler(404)
+def handle_404(e):
+    return render_template("error.html",
+                           error=e,
+                           status=404), 404
+
+
+@portfolio.errorhandler(403)
+def handle_403(e):
+    return render_template("error.html",
+                           error=e,
+                           status=403), 403
+
+
+@portfolio.errorhandler(500)
+def handle_500(e):
+    return render_template("error.html",
+                           error=e,
+                           status=500), 500
