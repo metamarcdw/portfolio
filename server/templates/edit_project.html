@@ -14,7 +14,14 @@
                 </div>
             </div>
             {% endfor %}
-            <button class="btn btn-secondary" type="submit">Submit</button>
+            <div class="d-flex justify-content-between">
+                <button class="btn btn-secondary" type="submit">Submit</button>
+                <a
+                    href="#"
+                    class="card-link"
+                    id="backlink"
+                ><i class="fas fa-arrow-left"></i> Go Back</a>
+            </div>
         </form>
         {% if form.errors %}
             {% for error in form.errors %}
