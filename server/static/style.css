@@ -72,3 +72,25 @@
 .error-container {
     margin: 3em;
 }
+
+@media screen and (max-width: 995px) {
+    .small-stack {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .small-mtop {
+        margin-top: 0.5em;
+    }
+
+    .grow-nav {
+        min-height: 6em;
+    }
+}
+
+@media screen and (max-width: 995px) and (min-width: 555px) {
+    .shrink-link {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+}

@@ -22,18 +22,18 @@
     </head>
     <body>
         <div class="container">
-            <nav class="nav justify-content-center align-items-center mynav">
+            <nav class="nav justify-content-center align-items-center mynav grow-nav">
                 <div class="d-flex justify-content-around flex-wrap navgroup">
-                    <a class="nav-link active navlink" href="{{ url_for('portfolio.home') }}">Home</a>
-                    <a class="nav-link navlink" href="{{ url_for('portfolio._portfolio') }}">Portfolio</a>
-                    <a class="nav-link navlink" href="{{ url_for('portfolio.contact_view') }}">Contact</a>
+                    <a class="nav-link active navlink shrink-link" href="{{ url_for('portfolio.home') }}">Home</a>
+                    <a class="nav-link navlink shrink-link" href="{{ url_for('portfolio._portfolio') }}">Portfolio</a>
+                    <a class="nav-link navlink shrink-link" href="{{ url_for('portfolio.contact_view') }}">Contact</a>
                 </div>
 
                 <!-- Button trigger modal -->
                 {% if logged_in %}
-                <div class="fixed">
+                <div class="fixed small-stack">
                     <a href="{{ url_for('portfolio.logout') }}" class="btn btn-secondary">Logout</a>
-                    <a href="{{ url_for('portfolio.new_project') }}" class="btn btn-success">New</a>
+                    <a href="{{ url_for('portfolio.new_project') }}" class="btn btn-success small-mtop">New</a>
                 </div>
                 {% else %}
                 <button type="button" class="btn btn-secondary fixed" data-toggle="modal" data-target="#exampleModal">
