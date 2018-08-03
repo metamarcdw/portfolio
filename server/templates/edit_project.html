@@ -3,7 +3,7 @@
 {% block bodyblock %}
 <div class="container d-flex justify-content-center">
     <div class="form-container">
-        <h3>Create a new Portfolio Project:</h3>
+        <h3>{{ title }}:</h3>
         <form method="POST">
             {{ form.csrf_token }}
             {% for field in form.field_names %}
