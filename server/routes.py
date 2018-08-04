@@ -1,7 +1,7 @@
-import os
-import json
 import random
 from flask import Blueprint, render_template, flash, request, redirect, url_for, abort
+from werkzeug.security import check_password_hash
+from server import secrets
 
 portfolio = Blueprint("portfolio", __name__, template_folder="templates")
 logged_in = False
@@ -21,21 +21,6 @@ rights = [
     "Lite-Brites",
     "knights"
 ]
-
-secret_path = os.path.join(os.path.dirname(__file__), "login_info.json")
-try:
-    with open(secret_path, "r") as file_:
-        login_info = json.load(file_)
-except FileNotFoundError as e:
-    raise FileNotFoundError(
-        "\n * Login info file:" +
-        f"\n\t{secret_path}\n   does not exist.") from e
-
-keys = ("username", "password")
-if not login_info or not all([key in login_info for key in keys]):
-    raise ValueError(
-        "\n * Login info file:" +
-        f"\n\t{secret_path}\n   is not complete.")
 
 
 @portfolio.route("/", methods=["GET", "POST"])
@@ -176,8 +161,8 @@ def logout():
 
 def handle_login():
     global logged_in
-    if request.form["username_input"] == login_info["username"] and \
-            request.form["password_input"] == login_info["password"]:
+    if request.form["username_input"] == secrets["username"] and \
+            check_password_hash(secrets["password_hash"], request.form["password_input"]):
         logged_in = True
         msg = "Login Successful."
     else:

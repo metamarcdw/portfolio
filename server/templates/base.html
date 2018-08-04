@@ -60,18 +60,19 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                        <div class="form-group">
-                                            <input
-                                                class="form-control login-form"
-                                                name="username_input"
-                                                type="text"
-                                                placeholder="Username">
-                                            <input
-                                                class="form-control login-form"
-                                                name="password_input"
-                                                type="password"
-                                                placeholder="Password">
-                                        </div>
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                    <div class="form-group">
+                                        <input
+                                            class="form-control login-form"
+                                            name="username_input"
+                                            type="text"
+                                            placeholder="Username">
+                                        <input
+                                            class="form-control login-form"
+                                            name="password_input"
+                                            type="password"
+                                            placeholder="Password">
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
