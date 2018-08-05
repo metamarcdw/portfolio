@@ -4,6 +4,7 @@ import json
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
+from flask_login import LoginManager
 
 
 secret_path = os.path.join(os.path.dirname(__file__), "secrets.json")
@@ -15,35 +16,43 @@ except FileNotFoundError as e:
         "\n * Secret file:" +
         f"\n\t{secret_path}\n   does not exist.") from e
 
-keys = ("username", "password_hash", "secret")
-if not secrets or not all([key in secrets for key in keys]):
+if not secrets or not "secret" in secrets:
     raise ValueError(
         "\n * Secret file:" +
         f"\n\t{secret_path}\n   is not complete.")
 
 db = SQLAlchemy()
 csrf = CSRFProtect()
+login = LoginManager()
+
+
+@login.user_loader
+def load_user(user_id):
+    from server.models import User
+    return User.query.get(int(user_id))
 
 
 def create_app():
     app = Flask(__name__)
 
     app.debug = True
-    app.secret_key = "asecret"
+    app.secret_key = secrets["secret"]
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["SQLALCHEMY_DATABASE_URI"] = \
         r"sqlite:///C:\Users\cypher\Desktop\portfolio\server\db.sqlite3"
 
     db.init_app(app)
     csrf.init_app(app)
+    login.init_app(app)
 
     #pylint: disable=W0612
     @app.shell_context_processor
     def make_shell_context():
-        from server.models import Project
+        from server.models import Project, User
         return {
             "db": db,
-            "Project": Project
+            "Project": Project,
+            "User": User
         }
 
     from server.routes import portfolio

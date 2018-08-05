@@ -30,7 +30,7 @@
                 </div>
 
                 <!-- Button trigger modal -->
-                {% if logged_in %}
+                {% if current_user.is_authenticated %}
                 <div class="fixed small-stack">
                     <a href="{{ url_for('portfolio.logout') }}" class="btn btn-secondary">Logout</a>
                     <a href="{{ url_for('portfolio.new_project') }}" class="btn btn-success small-mtop">New</a>
@@ -61,6 +61,7 @@
                                 </div>
                                 <div class="modal-body">
                                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                    <input type=hidden value="{{ next or '' }}" name=next>
                                     <div class="form-group">
                                         <input
                                             class="form-control login-form"

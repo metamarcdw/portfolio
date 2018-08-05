@@ -1,10 +1,13 @@
 import random
-from flask import Blueprint, render_template, flash, request, redirect, url_for, abort
+from urllib.parse import urlparse, urljoin
+from flask import (
+    Blueprint, render_template, flash, request, redirect, url_for, abort
+)
 from werkzeug.security import check_password_hash
-from server import secrets
+from flask_login import login_user, logout_user, login_required, current_user
+from server.models import User
 
 portfolio = Blueprint("portfolio", __name__, template_folder="templates")
-logged_in = False
 
 contact_info = {
     "email": "marcdw87@gmail.com",
@@ -27,12 +30,11 @@ rights = [
 def home():
     if request.method == "POST":
         return handle_login()
-    user = "MarcDW" if logged_in else "Guest"
+    user = "MarcDW" if current_user.is_authenticated else "Guest"
     flash(f"<!-- TODO: Welcome {user}. Thanks for visiting. -->")
     return render_template("home.html",
                            title="Welcome",
-                           right=random.choice(rights),
-                           logged_in=logged_in)
+                           right=random.choice(rights))
 
 
 @portfolio.route("/portfolio", methods=["GET", "POST"])
@@ -44,8 +46,7 @@ def _portfolio():
     return render_template("portfolio.html",
                            title="Portfolio",
                            projects=projects,
-                           right=random.choice(rights),
-                           logged_in=logged_in)
+                           right=random.choice(rights))
 
 
 @portfolio.route("/projects/<int:id>", methods=["GET", "POST"])
@@ -59,8 +60,7 @@ def projects_view(id):
     return render_template("project.html",
                            title=project.title,
                            project=project,
-                           right=random.choice(rights),
-                           logged_in=logged_in)
+                           right=random.choice(rights))
 
 
 @portfolio.route("/contact", methods=["GET", "POST"])
@@ -70,19 +70,16 @@ def contact_view():
     return render_template("contact.html",
                            title="Contact Me",
                            contact=contact_info,
-                           right=random.choice(rights),
-                           logged_in=logged_in)
+                           right=random.choice(rights))
 
 
 #pylint: disable=E1101
 @portfolio.route("/new", methods=["GET", "POST"])
+@login_required
 def new_project():
     from server import db
     from server.models import Project
     from server.forms import ProjectForm
-
-    if not logged_in:
-        abort(403)
 
     project_form = ProjectForm()
     if request.method == "POST" and project_form.validate():
@@ -102,18 +99,15 @@ def new_project():
     return render_template("edit_project.html",
                            form=project_form,
                            title="Create Projects",
-                           right=random.choice(rights),
-                           logged_in=logged_in)
+                           right=random.choice(rights))
 
 
 @portfolio.route("/edit/<int:id>", methods=["GET", "POST"])
+@login_required
 def edit_project(id):
     from server import db
     from server.models import Project
     from server.forms import ProjectForm
-
-    if not logged_in:
-        abort(403)
 
     project = Project.query.filter_by(id=id).first()
     if not project:
@@ -129,17 +123,14 @@ def edit_project(id):
     return render_template("edit_project.html",
                            form=project_form,
                            title="Edit Projects",
-                           right=random.choice(rights),
-                           logged_in=logged_in)
+                           right=random.choice(rights))
 
 
 @portfolio.route("/delete/<int:id>")
+@login_required
 def delete_project(id):
     from server import db
     from server.models import Project
-
-    if not logged_in:
-        abort(403)
 
     project = Project.query.filter_by(id=id).first()
     if not project:
@@ -152,23 +143,39 @@ def delete_project(id):
 
 
 @portfolio.route("/logout")
+@login_required
 def logout():
-    global logged_in
-    logged_in = False
+    logout_user()
     flash("Logged out.")
     return redirect(url_for("portfolio.home"))
 
 
+def is_safe_url(target):
+    # http://flask.pocoo.org/snippets/62/
+    ref_url = urlparse(request.host_url)
+    test_url = urlparse(urljoin(request.host_url, target))
+    return test_url.scheme in ('http', 'https') and \
+           ref_url.netloc == test_url.netloc
+
+
 def handle_login():
-    global logged_in
-    if request.form["username_input"] == secrets["username"] and \
-            check_password_hash(secrets["password_hash"], request.form["password_input"]):
-        logged_in = True
+    next = None
+    username_input = request.form["username_input"]
+    password_input = request.form["password_input"]
+
+    superuser = User.query.filter_by(username=username_input).first()
+    if superuser and check_password_hash(superuser.password_hash, password_input):
+        login_user(superuser)
+
+        # is_safe_url should check if the url is safe for redirects.
+        next = request.form.get('next')
+        if not is_safe_url(next):
+            return abort(400)
         msg = "Login Successful."
     else:
         msg = "Login Failed."
     flash(msg)
-    return redirect(url_for("portfolio.home"))
+    return redirect(next or url_for("portfolio.home"))
 
 
 @portfolio.errorhandler(404)
