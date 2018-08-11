@@ -3,6 +3,7 @@ import json
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect
 from flask_login import LoginManager
 
@@ -22,6 +23,7 @@ if not secrets or not "secret" in secrets:
         f"\n\t{secret_path}\n   is not complete.")
 
 db = SQLAlchemy()
+migrate = Migrate(db=db)
 csrf = CSRFProtect()
 login = LoginManager()
 
@@ -42,6 +44,7 @@ def create_app():
         r"sqlite:///C:\Users\cypher\Desktop\portfolio\server\db.sqlite3"
 
     db.init_app(app)
+    migrate.init_app(app)
     csrf.init_app(app)
     login.init_app(app)
 
