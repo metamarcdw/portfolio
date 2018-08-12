@@ -6,7 +6,7 @@ from server import db, secrets
 #pylint: disable=E1101
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    index = db.Column(db.Integer, autoincrement=True)
+    # index = db.Column(db.Integer, autoincrement=True)
     title = db.Column(db.String(30), unique=True, nullable=False)
     imgfile = db.Column(db.String(30), nullable=False)
     website = db.Column(URLType, nullable=True)

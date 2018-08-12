@@ -17,7 +17,8 @@ except FileNotFoundError as e:
         "\n * Secret file:" +
         f"\n\t{secret_path}\n   does not exist.") from e
 
-if not secrets or not "secret" in secrets:
+keys = ("secret", "db_pswd")
+if not secrets or not all([key in secrets for key in keys]):
     raise ValueError(
         "\n * Secret file:" +
         f"\n\t{secret_path}\n   is not complete.")
@@ -39,9 +40,16 @@ def create_app():
 
     app.debug = True
     app.secret_key = secrets["secret"]
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+    db_user = "marcdw87"
+    db_pswd = secrets["db_pswd"]
+    db_host = "localhost"
+    db_name = "portfolio"
     app.config["SQLALCHEMY_DATABASE_URI"] = \
-        r"sqlite:///C:\Users\cypher\Desktop\portfolio\server\db.sqlite3"
+        f"mysql://{db_user}:{db_pswd}@{db_host}/{db_user}${db_name}"
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["SQLALCHEMY_POOL_SIZE"] = 10
+    app.config["SQLALCHEMY_POOL_RECYCLE"] = 280
 
     db.init_app(app)
     migrate.init_app(app)

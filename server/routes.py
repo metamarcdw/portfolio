@@ -43,7 +43,7 @@ def _portfolio():
     if request.method == "POST":
         return handle_login()
     projects = Project.query.all()
-    projects.sort(key=lambda p: p.index)
+    # projects.sort(key=lambda p: p.index)
     return render_template("portfolio.html",
                            title="Portfolio",
                            projects=projects,
@@ -151,16 +151,16 @@ def moveup_project(index):
 
     this_project = Project.query.filter_by(index=index).first()
     next_project = Project.query.filter_by(index=index - 1).first()
+
     if not this_project:
         abort(404)
-    if not next_project:
-        abort(401)
-    temp = this_project.index
-    this_project.index = next_project.index
-    next_project.index = temp
-    db.session.commit()
+    if next_project:
+        temp = this_project.index
+        this_project.index = next_project.index
+        next_project.index = temp
+        db.session.commit()
+        flash("Move was successful.")
 
-    flash("Move was successful.")
     return redirect(url_for("portfolio._portfolio"))
 
 
