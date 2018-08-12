@@ -1,7 +1,7 @@
 
 $(function() {
     $("#backlink").on("click", function() {
-        window.history.back();
+        window.history.go(-1);
     });
 
     $(".delete-btn").on("click", function() {
