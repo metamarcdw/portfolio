@@ -43,7 +43,7 @@ def _portfolio():
     if request.method == "POST":
         return handle_login()
     projects = Project.query.all()
-    # projects.sort(key=lambda p: p.index)
+    projects.sort(key=lambda p: p.index)
     return render_template("portfolio.html",
                            title="Portfolio",
                            projects=projects,
