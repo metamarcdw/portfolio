@@ -43,6 +43,7 @@ def _portfolio():
     if request.method == "POST":
         return handle_login()
     projects = Project.query.all()
+    projects.sort(key=lambda p: p.index)
     return render_template("portfolio.html",
                            title="Portfolio",
                            projects=projects,
@@ -139,6 +140,27 @@ def delete_project(id):
     db.session.commit()
 
     flash("Delete was successful.")
+    return redirect(url_for("portfolio._portfolio"))
+
+
+@portfolio.route("/moveup/<int:index>")
+@login_required
+def moveup_project(index):
+    from server import db
+    from server.models import Project
+
+    this_project = Project.query.filter_by(index=index).first()
+    next_project = Project.query.filter_by(index=index - 1).first()
+
+    if not this_project:
+        abort(404)
+    if next_project:
+        temp = this_project.index
+        this_project.index = next_project.index
+        next_project.index = temp
+        db.session.commit()
+        flash("Move was successful.")
+
     return redirect(url_for("portfolio._portfolio"))
 
 

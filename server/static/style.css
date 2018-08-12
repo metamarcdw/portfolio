@@ -73,6 +73,10 @@
     margin: 3em;
 }
 
+.btn-margin {
+    margin-top: 0.3em;
+}
+
 @media screen and (max-width: 995px) {
     .small-stack {
         display: flex;
