@@ -4,7 +4,7 @@
 <div class="card d-flex align-items-center">
     <img
         class="card-img-top mycard"
-        src="{{ url_for('static', filename='images/' + project.imgfile) }}"
+        src="{{ url_for('images', filename=project.imgfile, width=300) }}"
         alt="Card image cap">
     <div class="card-body">
         <h5 class="card-title">{{ project.title }}</h5>

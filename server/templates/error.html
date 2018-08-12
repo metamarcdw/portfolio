@@ -4,7 +4,7 @@
 <div class="d-flex flex-column align-items-center error-container">
     <img
         class="mycard"
-        src="{{ url_for('static', filename='images/unicorn.jpg') }}"
+        src="{{ url_for('images', filename='unicorn.jpg', width=400) }}"
         alt="Unicorn">
     <div>
         <h3>Error ({{ status }})</h3>

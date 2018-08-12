@@ -6,6 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect
 from flask_login import LoginManager
+from flask_images import Images
 
 
 secret_path = os.path.join(os.path.dirname(__file__), "secrets.json")
@@ -27,6 +28,7 @@ db = SQLAlchemy()
 migrate = Migrate(db=db)
 csrf = CSRFProtect()
 login = LoginManager()
+images = Images()
 
 
 @login.user_loader
@@ -40,6 +42,7 @@ def create_app():
 
     app.debug = True
     app.secret_key = secrets["secret"]
+    app.config["IMAGES_PATH"] = ["static/images"]
 
     db_user = "marcdw87"
     db_pswd = secrets["db_pswd"]
@@ -55,6 +58,7 @@ def create_app():
     migrate.init_app(app)
     csrf.init_app(app)
     login.init_app(app)
+    images.init_app(app)
 
     #pylint: disable=W0612
     @app.shell_context_processor

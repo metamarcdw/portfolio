@@ -10,7 +10,7 @@
         <div class="card mycard">
             <img
                 class="card-img-top"
-                src="{{ url_for('static', filename='images/' + project.imgfile) }}"
+                src="{{ url_for('images', filename=project.imgfile, width=300) }}"
                 alt="Card image cap"
             >
             <div class="card-body">
