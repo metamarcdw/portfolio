@@ -7,7 +7,7 @@ from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect
 from flask_login import LoginManager
 from flask_images import Images
-
+from flask_uploads import UploadSet, configure_uploads, IMAGES
 
 secret_path = os.path.join(os.path.dirname(__file__), "secrets.json")
 try:
@@ -29,6 +29,7 @@ migrate = Migrate(db=db)
 csrf = CSRFProtect()
 login = LoginManager()
 images = Images()
+photos = UploadSet("photos", IMAGES)
 
 
 @login.user_loader
@@ -43,6 +44,7 @@ def create_app():
     app.debug = True
     app.secret_key = secrets["secret"]
     app.config["IMAGES_PATH"] = ["static/images"]
+    app.config["UPLOADED_PHOTOS_DEST"] = "server/static/images"
 
     db_user = "marcdw87"
     db_pswd = secrets["db_pswd"]
@@ -59,6 +61,7 @@ def create_app():
     csrf.init_app(app)
     login.init_app(app)
     images.init_app(app)
+    configure_uploads(app, photos)
 
     #pylint: disable=W0612
     @app.shell_context_processor
