@@ -14,7 +14,8 @@ class ModelForm(BaseModelForm):
 class ProjectForm(ModelForm):
     class Meta:
         model = Project
+        exclude = ["imgfile"]
 
-    field_names = ("title", "imgfile", "website",
+    field_names = ("title", "website",
                    "github_url", "abandoned",
                    "description", "long_desc")
