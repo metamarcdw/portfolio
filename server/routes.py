@@ -1,3 +1,4 @@
+import os
 import random
 from urllib.parse import urlparse, urljoin
 from flask import (
@@ -86,7 +87,7 @@ def new_project():
     project_form = ProjectForm()
     if request.method == "POST" and project_form.validate() and "photo" in request.files:
         filename = photos.save(request.files["photo"])
-        index = Project.query.count() + 1
+        index = db.session.query(db.func.max(Project.index)).scalar() + 1
         project = Project(title=request.form["title"],
                           imgfile=filename,
                           website=request.form["website"],
@@ -143,6 +144,10 @@ def delete_project(id):
     project = Project.query.filter_by(id=id).first()
     if not project:
         abort(404)
+    image_path = os.path.join(os.path.dirname(__file__),
+                              "static", "images", project.imgfile)
+    if os.path.exists(image_path):
+        os.unlink(image_path)
     db.session.delete(project)
     db.session.commit()
 
@@ -157,7 +162,9 @@ def moveup_project(index):
     from server.models import Project
 
     this_project = Project.query.filter_by(index=index).first()
-    next_project = Project.query.filter_by(index=index - 1).first()
+    next_project = Project.query.filter(
+        Project.index < this_project.index).order_by(
+            Project.index.desc()).first()
 
     if not this_project:
         abort(404)
@@ -184,7 +191,7 @@ def is_safe_url(target):
     ref_url = urlparse(request.host_url)
     test_url = urlparse(urljoin(request.host_url, target))
     return test_url.scheme in ("http", "https") and \
-           ref_url.netloc == test_url.netloc
+        ref_url.netloc == test_url.netloc
 
 
 def handle_login():
