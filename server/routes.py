@@ -6,6 +6,7 @@ from flask import (
 from werkzeug.security import check_password_hash
 from flask_login import login_user, logout_user, login_required, current_user
 from server.models import User
+from server import photos
 
 portfolio = Blueprint("portfolio", __name__, template_folder="templates")
 
@@ -83,24 +84,30 @@ def new_project():
     from server.forms import ProjectForm
 
     project_form = ProjectForm()
-    if request.method == "POST" and project_form.validate():
+    if request.method == "POST" and project_form.validate() and "photo" in request.files:
+        filename = photos.save(request.files["photo"])
+        index = Project.query.count() + 1
         project = Project(title=request.form["title"],
-                          imgfile=request.form["imgfile"],
+                          imgfile=filename,
                           website=request.form["website"],
                           github_url=request.form["github_url"],
                           abandoned=request.form.get(
                               "abandoned") is not None,
                           description=request.form["description"],
-                          long_desc=request.form["long_desc"])
+                          long_desc=request.form["long_desc"],
+                          index=index)
         db.session.add(project)
         db.session.commit()
         flash("Project was created.")
         return redirect(url_for("portfolio._portfolio"))
+    else:
+        flash("Project creation failed.")
 
     return render_template("edit_project.html",
                            form=project_form,
                            title="Create Projects",
-                           right=random.choice(rights))
+                           right=random.choice(rights),
+                           new=True)
 
 
 @portfolio.route("/edit/<int:id>", methods=["GET", "POST"])
@@ -176,7 +183,7 @@ def is_safe_url(target):
     # http://flask.pocoo.org/snippets/62/
     ref_url = urlparse(request.host_url)
     test_url = urlparse(urljoin(request.host_url, target))
-    return test_url.scheme in ('http', 'https') and \
+    return test_url.scheme in ("http", "https") and \
            ref_url.netloc == test_url.netloc
 
 
@@ -190,7 +197,7 @@ def handle_login():
         login_user(superuser)
 
         # is_safe_url should check if the url is safe for redirects.
-        next = request.form.get('next')
+        next = request.form.get("next")
         if not is_safe_url(next):
             return abort(400)
         msg = "Login Successful."
