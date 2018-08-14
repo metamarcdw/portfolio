@@ -1,6 +1,6 @@
 from sqlalchemy_utils import URLType
 from flask_login import UserMixin
-from server import db, secrets
+from server import db
 
 
 #pylint: disable=E1101
