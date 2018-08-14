@@ -29,7 +29,6 @@ class ProductionConfig(Config):
     db_host = "marcdw87.mysql.pythonanywhere-services.com"
     db_name = "portfolio"
     SQLALCHEMY_DATABASE_URI = f"mysql://{db_user}:{db_pswd}@{db_host}/{db_user}${db_name}"
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_POOL_SIZE = 10
     SQLALCHEMY_POOL_RECYCLE = 280
 

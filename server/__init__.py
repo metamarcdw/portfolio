@@ -32,7 +32,7 @@ def create_app():
         config_type = "server.config.DevelopmentConfig"
     else:
         raise ValueError("Mode variable not set.")
-    print(f" * Running the API in {mode} mode.")
+    print(f" * Running the server in {mode} mode.")
 
     app = Flask(__name__)
     app.config.from_object(config_type)
