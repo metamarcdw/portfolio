@@ -231,5 +231,5 @@ def handle_403(e):
 @portfolio.errorhandler(500)
 def handle_500(e):
     return render_template("error.html",
-                           error=e,
+                           error="Internal Server Error",
                            status=500), 500
