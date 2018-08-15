@@ -1,4 +1,5 @@
 import os
+import sys
 import json
 
 secret_path = os.path.join(os.path.dirname(__file__), "secrets.json")
@@ -23,10 +24,13 @@ class Config:
     UPLOADED_PHOTOS_DEST = "server/static/images"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+
 class ProductionConfig(Config):
     db_user = "marcdw87"
     db_pswd = secrets["db_pswd"]
-    db_host = "marcdw87.mysql.pythonanywhere-services.com"
+    db_host = os.environ.get("PORTFOLIO_DB")
+    if not db_host:
+        raise ValueError("DB variable not set.")
     db_name = "portfolio"
     SQLALCHEMY_DATABASE_URI = f"mysql://{db_user}:{db_pswd}@{db_host}/{db_user}${db_name}"
     SQLALCHEMY_POOL_SIZE = 10
@@ -35,4 +39,5 @@ class ProductionConfig(Config):
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = r"sqlite:///C:\Users\cypher\Desktop\portfolio\server\db.sqlite3"
+    SQLALCHEMY_DATABASE_URI = r"sqlite:///C:\Users\cypher\Desktop\portfolio\server\db.sqlite3" \
+        if sys.platform == "win32" else ProductionConfig.SQLALCHEMY_DATABASE_URI

@@ -5,6 +5,6 @@ init:
 	pip install -e ../Flask-Images
 
 go:
-	export PORTFOLIO_MODE=development && python -m server
+	export PORTFOLIO_MODE=development && export PORTFOLIO_DB=localhost && python -m server
 
 .PHONY: init go
