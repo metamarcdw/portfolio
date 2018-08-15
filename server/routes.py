@@ -124,11 +124,14 @@ def edit_project(title):
         abort(404)
     project_form = ProjectForm(obj=project)
 
-    if request.method == "POST" and project_form.validate():
-        project_form.populate_obj(project)
-        db.session.commit()
-        flash("Edit was successful.")
-        return redirect(url_for("portfolio._portfolio"))
+    if request.method == "POST":
+        if project_form.validate():
+            project_form.populate_obj(project)
+            db.session.commit()
+            flash("Edit was successful.")
+            return redirect(url_for("portfolio._portfolio"))
+        else:
+            flash("Project editing failed.")
 
     return render_template("edit_project.html",
                            form=project_form,
