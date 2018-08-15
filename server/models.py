@@ -1,4 +1,5 @@
 from sqlalchemy_utils import URLType
+from wtforms.validators import Regexp
 from flask_login import UserMixin
 from server import db
 
@@ -7,7 +8,10 @@ from server import db
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     index = db.Column(db.Integer, autoincrement=True)
-    title = db.Column(db.String(30), unique=True, nullable=False)
+    title = db.Column(db.String(30),
+                      unique=True,
+                      nullable=False,
+                      info={"validators": Regexp("^[A-Za-z0-9_-]*$")})
     imgfile = db.Column(db.String(30), nullable=False)
     website = db.Column(URLType, nullable=True)
     github_url = db.Column(URLType, nullable=False)
