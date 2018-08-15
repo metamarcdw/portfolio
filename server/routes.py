@@ -85,24 +85,25 @@ def new_project():
     from server.forms import ProjectForm
 
     project_form = ProjectForm()
-    if request.method == "POST" and project_form.validate() and "photo" in request.files:
-        filename = photos.save(request.files["photo"])
-        index = db.session.query(db.func.max(Project.index)).scalar() + 1
-        project = Project(title=request.form["title"],
-                          imgfile=filename,
-                          website=request.form["website"],
-                          github_url=request.form["github_url"],
-                          abandoned=request.form.get(
-                              "abandoned") is not None,
-                          description=request.form["description"],
-                          long_desc=request.form["long_desc"],
-                          index=index)
-        db.session.add(project)
-        db.session.commit()
-        flash("Project was created.")
-        return redirect(url_for("portfolio._portfolio"))
-    else:
-        flash("Project creation failed.")
+    if request.method == "POST":
+        if project_form.validate() and "photo" in request.files:
+            filename = photos.save(request.files["photo"])
+            index = db.session.query(db.func.max(Project.index)).scalar() + 1
+            project = Project(title=request.form["title"],
+                              imgfile=filename,
+                              website=request.form["website"],
+                              github_url=request.form["github_url"],
+                              abandoned=request.form.get(
+                                  "abandoned") is not None,
+                              description=request.form["description"],
+                              long_desc=request.form["long_desc"],
+                              index=index)
+            db.session.add(project)
+            db.session.commit()
+            flash("Project was created.")
+            return redirect(url_for("portfolio._portfolio"))
+        else:
+            flash("Project creation failed.")
 
     return render_template("edit_project.html",
                            form=project_form,
