@@ -16,10 +16,10 @@
             <div class="card-body">
                 <h5 class="card-title">{{ project.title }}</h5>
                 <p class="card-text">{{ project.description }}</p>
-                <a href="projects/{{ project.id }}" class="btn btn-secondary">Go</a>
+                <a href="projects/{{ project.title }}" class="btn btn-secondary">Go</a>
                 {% if current_user.is_authenticated %}
-                <a href="edit/{{ project.id }}" class="btn btn-primary">Edit</a>
-                <a href="delete/{{ project.id }}" class="btn btn-danger delete-btn">Delete</a>
+                <a href="edit/{{ project.title }}" class="btn btn-primary">Edit</a>
+                <a href="delete/{{ project.title }}" class="btn btn-danger delete-btn">Delete</a>
                 <a href="moveup/{{ project.index }}" class="btn btn-dark btn-margin"><i class="fas fa-angle-up"></i></a>
                 {% endif %}
             </div>

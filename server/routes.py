@@ -52,12 +52,12 @@ def _portfolio():
                            right=random.choice(rights))
 
 
-@portfolio.route("/projects/<int:id>", methods=["GET", "POST"])
-def projects_view(id):
+@portfolio.route("/projects/<string:title>", methods=["GET", "POST"])
+def projects_view(title):
     from server.models import Project
     if request.method == "POST":
         return handle_login()
-    project = Project.query.filter_by(id=id).first()
+    project = Project.query.filter_by(title=title).first()
     if not project:
         abort(404)
     return render_template("project.html",
@@ -111,14 +111,14 @@ def new_project():
                            new=True)
 
 
-@portfolio.route("/edit/<int:id>", methods=["GET", "POST"])
+@portfolio.route("/edit/<string:title>", methods=["GET", "POST"])
 @login_required
-def edit_project(id):
+def edit_project(title):
     from server import db
     from server.models import Project
     from server.forms import ProjectForm
 
-    project = Project.query.filter_by(id=id).first()
+    project = Project.query.filter_by(title=title).first()
     if not project:
         abort(404)
     project_form = ProjectForm(obj=project)
@@ -135,13 +135,13 @@ def edit_project(id):
                            right=random.choice(rights))
 
 
-@portfolio.route("/delete/<int:id>")
+@portfolio.route("/delete/<string:title>")
 @login_required
-def delete_project(id):
+def delete_project(title):
     from server import db
     from server.models import Project
 
-    project = Project.query.filter_by(id=id).first()
+    project = Project.query.filter_by(title=title).first()
     if not project:
         abort(404)
     image_path = os.path.join(os.path.dirname(__file__),
