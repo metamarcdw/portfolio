@@ -88,7 +88,7 @@ def new_project():
     if request.method == "POST":
         if project_form.validate() and "photo" in request.files:
             filename = photos.save(request.files["photo"])
-            index = db.session.query(db.func.max(Project.index)).scalar() + 1
+            index = (db.session.query(db.func.max(Project.index)).scalar() or 0) + 1
             project = Project(title=request.form["title"],
                               imgfile=filename,
                               website=request.form["website"],
