@@ -1,7 +1,7 @@
 
 $(function() {
     $("#backlink").on("click", function() {
-        window.history.go(-1);
+        window.location.href = document.referrer;
     });
 
     $(".delete-btn").on("click", function() {
