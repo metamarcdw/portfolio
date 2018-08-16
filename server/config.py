@@ -29,7 +29,7 @@ class ProductionConfig(Config):
     db_user = "marcdw87"
     db_pswd = secrets["db_pswd"]
     db_host = os.environ.get("PORTFOLIO_DB")
-    if not db_host:
+    if os.environ.get("PORTFOLIO_MODE") == "production" and not db_host:
         raise ValueError("DB variable not set.")
     db_name = "portfolio"
     SQLALCHEMY_DATABASE_URI = f"mysql://{db_user}:{db_pswd}@{db_host}/{db_user}${db_name}"
