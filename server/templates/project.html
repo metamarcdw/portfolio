@@ -11,16 +11,16 @@
         <p class="card-text">{{ project.long_desc }}</p>
 
         {% if project.abandoned %}
-        <p class="abandoned">** Abandoned</p>
+            <p class="abandoned">** Abandoned</p>
         {% endif %}
 
         <div class="d-flex flex-wrap">
             {% if project.website %}
-            <a
-                href="{{ project.website }}"
-                target="_blank"
-                class="card-link"
-            ><i class="fas fa-globe"></i> Website</a>
+                <a
+                    href="{{ project.website }}"
+                    target="_blank"
+                    class="card-link"
+                ><i class="fas fa-globe"></i> Website</a>
             {% endif %}
             <a
                 href="{{ project.github_url }}"

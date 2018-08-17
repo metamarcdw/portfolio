@@ -7,23 +7,23 @@
 <div class="d-flex flex-wrap justify-content-center">
     {% if projects %}
         {% for project in projects %}
-        <div class="card mycard">
-            <img
-                class="card-img-top"
-                src="{{ url_for('images', filename=project.imgfile, width=300) }}"
-                alt="Card image cap"
-            >
-            <div class="card-body">
-                <h5 class="card-title">{{ project.title|replace("-", " ") }}</h5>
-                <p class="card-text">{{ project.description }}</p>
-                <a href="projects/{{ project.title }}" class="btn btn-secondary">Go</a>
-                {% if current_user.is_authenticated %}
-                <a href="edit/{{ project.title }}" class="btn btn-primary">Edit</a>
-                <a href="delete/{{ project.title }}" class="btn btn-danger delete-btn">Delete</a>
-                <a href="moveup/{{ project.index }}" class="btn btn-dark btn-margin"><i class="fas fa-angle-up"></i></a>
-                {% endif %}
+            <div class="card mycard">
+                <img
+                    class="card-img-top"
+                    src="{{ url_for('images', filename=project.imgfile, width=300) }}"
+                    alt="Card image cap"
+                >
+                <div class="card-body">
+                    <h5 class="card-title">{{ project.title|replace("-", " ") }}</h5>
+                    <p class="card-text">{{ project.description }}</p>
+                    <a href="projects/{{ project.title }}" class="btn btn-secondary">Go</a>
+                    {% if current_user.is_authenticated %}
+                        <a href="edit/{{ project.title }}" class="btn btn-primary">Edit</a>
+                        <a href="delete/{{ project.title }}" class="btn btn-danger delete-btn">Delete</a>
+                        <a href="moveup/{{ project.index }}" class="btn btn-dark btn-margin"><i class="fas fa-angle-up"></i></a>
+                    {% endif %}
+                </div>
             </div>
-        </div>
         {% endfor %}
     {% endif %}
 </div>

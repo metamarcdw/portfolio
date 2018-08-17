@@ -32,14 +32,14 @@
 
                 <!-- Button trigger modal -->
                 {% if current_user.is_authenticated %}
-                <div class="fixed small-stack">
-                    <a href="{{ url_for('portfolio.logout') }}" class="btn btn-secondary">Logout</a>
-                    <a href="{{ url_for('portfolio.new_project') }}" class="btn btn-success small-mtop">New</a>
-                </div>
+                    <div class="fixed small-stack">
+                        <a href="{{ url_for('portfolio.logout') }}" class="btn btn-secondary">Logout</a>
+                        <a href="{{ url_for('portfolio.new_project') }}" class="btn btn-success small-mtop">New</a>
+                    </div>
                 {% else %}
-                <button type="button" class="btn btn-secondary fixed" data-toggle="modal" data-target="#exampleModal">
-                    Login
-                </button>
+                    <button type="button" class="btn btn-secondary fixed" data-toggle="modal" data-target="#exampleModal">
+                        Login
+                    </button>
                 {% endif %}
                 
                 <!-- Modal -->
@@ -88,12 +88,12 @@
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
                     {% for message in messages %}
-                    <div class="alert alert-secondary alert-dismissible fade show" role="alert">
-                        {{ message }}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
+                        <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
                     {% endfor %}
                 {% endif %}
             {% endwith %}
