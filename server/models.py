@@ -1,3 +1,4 @@
+from datetime import datetime
 from sqlalchemy_utils import URLType
 from wtforms.validators import Regexp
 from flask_login import UserMixin
@@ -30,3 +31,17 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return f"<User username: {self.username}>"
+
+
+class Blogpost(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(30),
+                      unique=True,
+                      nullable=False,
+                      info={"validators": Regexp("[A-Za-z0-9-_]*$")})
+    imgfile = db.Column(db.String(30), nullable=False)
+    date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    markdown = db.Column(db.Text, nullable=False)
+
+    def __repr__(self):
+        return f"<Blogpost title: {self.title}>"
