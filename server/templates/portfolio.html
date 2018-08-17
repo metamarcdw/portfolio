@@ -14,7 +14,7 @@
                 alt="Card image cap"
             >
             <div class="card-body">
-                <h5 class="card-title">{{ project.title }}</h5>
+                <h5 class="card-title">{{ project.title|replace("-", " ") }}</h5>
                 <p class="card-text">{{ project.description }}</p>
                 <a href="projects/{{ project.title }}" class="btn btn-secondary">Go</a>
                 {% if current_user.is_authenticated %}

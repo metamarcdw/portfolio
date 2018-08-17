@@ -7,7 +7,7 @@
         src="{{ url_for('images', filename=project.imgfile, width=300) }}"
         alt="Card image cap">
     <div class="card-body">
-        <h5 class="card-title">{{ project.title }}</h5>
+        <h5 class="card-title">{{ project.title|replace("-", " ") }}</h5>
         <p class="card-text">{{ project.long_desc }}</p>
 
         {% if project.abandoned %}
