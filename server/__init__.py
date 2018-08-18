@@ -50,11 +50,12 @@ def create_app():
     #pylint: disable=W0612
     @app.shell_context_processor
     def make_shell_context():
-        from server.models import Project, User
+        from server.models import Project, User, Blogpost
         return {
             "db": db,
             "Project": Project,
-            "User": User
+            "User": User,
+            "Blogpost": Blogpost
         }
 
     @app.template_filter("datetime")
