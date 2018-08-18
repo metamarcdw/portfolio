@@ -19,14 +19,14 @@
                     {% if item.description %}
                         <p class="card-text">{{ item.description }}</p>
                     {% endif %}
-                    <a href="{{ detail }}/{{ item.title }}" class="btn btn-secondary">
+                    <a href="{{ paths['detail'] }}/{{ item.title }}" class="btn btn-secondary">
                         <i class="fas fa-arrow-right"></i> Go</a>
                     {% if current_user.is_authenticated %}
-                        <a href="edit/{{ item.title }}" class="btn btn-primary">
+                        <a href="{{ paths['edit'] }}/{{ item.title }}" class="btn btn-primary">
                             <i class="fas fa-edit"></i></a>
-                        <a href="delete/{{ item.title }}" class="btn btn-danger delete-btn">
+                        <a href="{{ paths['delete'] }}/{{ item.title }}" class="btn btn-danger delete-btn">
                             <i class="fas fa-trash-alt"></i></a>
-                        <a href="moveup/{{ item.index }}" class="btn btn-dark">
+                        <a href="{{ paths['moveup'] }}/{{ item.index }}" class="btn btn-dark">
                             <i class="fas fa-angle-up"></i></a>
                     {% endif %}
                 </div>

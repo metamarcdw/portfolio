@@ -50,11 +50,17 @@ def _portfolio():
         return _handle_login()
     projects = Project.query.all()
     projects.sort(key=lambda p: p.index)
+    paths = {
+        "detail": "projects",
+        "edit": "edit",
+        "delete": "delete",
+        "moveup": "moveup"
+    }
     return render_template("items.html",
                            title="Portfolio",
                            heading="MARCDW'S PORTFOLIO",
-                           detail="projects",
                            items=projects,
+                           paths=paths,
                            right=random.choice(rights))
 
 
@@ -65,11 +71,17 @@ def _blog():
         return _handle_login()
     blogposts = Blogpost.query.all()
     blogposts.sort(key=lambda p: p.index)
+    paths = {
+        "detail": "blogposts",
+        "edit": "edit_post",
+        "delete": "delete_post",
+        "moveup": "moveup_post"
+    }
     return render_template("items.html",
                            title="Blog",
                            heading="MARCDW'S BLOG",
-                           detail="blog",
                            items=blogposts,
+                           paths=paths,
                            right=random.choice(rights))
 
 
@@ -253,7 +265,7 @@ def moveup_project(index):
 blog = Blueprint("blog", __name__, template_folder="templates")
 
 
-@blog.route("/blogpost/<string:title>", methods=["GET", "POST"])
+@blog.route("/blogposts/<string:title>", methods=["GET", "POST"])
 def blogpost_view(title):
     from server.models import Blogpost
     if request.method == "POST":
