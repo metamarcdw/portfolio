@@ -9,7 +9,6 @@ from flask_login import login_user, logout_user, login_required, current_user
 from server.models import User
 from server import photos
 
-portfolio = Blueprint("portfolio", __name__, template_folder="templates")
 
 contact_info = {
     "email": "marcdw87@gmail.com",
@@ -27,8 +26,13 @@ rights = [
     "knights"
 ]
 
+#################################################################
+# ----------------------- MAIN BLUEPRINT ------------------------
+#################################################################
+main = Blueprint("main", __name__, template_folder="templates")
 
-@portfolio.route("/", methods=["GET", "POST"])
+
+@main.route("/", methods=["GET", "POST"])
 def home():
     if request.method == "POST":
         return _handle_login()
@@ -39,34 +43,37 @@ def home():
                            right=random.choice(rights))
 
 
-@portfolio.route("/portfolio", methods=["GET", "POST"])
+@main.route("/portfolio", methods=["GET", "POST"])
 def _portfolio():
     from server.models import Project
     if request.method == "POST":
         return _handle_login()
     projects = Project.query.all()
     projects.sort(key=lambda p: p.index)
-    return render_template("portfolio.html",
+    return render_template("items.html",
                            title="Portfolio",
-                           projects=projects,
+                           heading="MARCDW'S PORTFOLIO",
+                           detail="projects",
+                           items=projects,
                            right=random.choice(rights))
 
 
-@portfolio.route("/projects/<string:title>", methods=["GET", "POST"])
-def projects_view(title):
-    from server.models import Project
+@main.route("/blog", methods=["GET", "POST"])
+def _blog():
+    from server.models import Blogpost
     if request.method == "POST":
         return _handle_login()
-    project = Project.query.filter_by(title=title).first()
-    if not project:
-        abort(404)
-    return render_template("project.html",
-                           title=project.title,
-                           project=project,
+    blogposts = Blogpost.query.all()
+    blogposts.sort(key=lambda p: p.index)
+    return render_template("items.html",
+                           title="Blog",
+                           heading="MARCDW'S BLOG",
+                           detail="blog",
+                           items=blogposts,
                            right=random.choice(rights))
 
 
-@portfolio.route("/contact", methods=["GET", "POST"])
+@main.route("/contact", methods=["GET", "POST"])
 def contact_view():
     if request.method == "POST":
         return _handle_login()
@@ -76,118 +83,12 @@ def contact_view():
                            right=random.choice(rights))
 
 
-#pylint: disable=E1101
-@portfolio.route("/new", methods=["GET", "POST"])
-@login_required
-def new_project():
-    from server import db
-    from server.models import Project
-    from server.forms import ProjectForm
-
-    project_form = ProjectForm()
-    if request.method == "POST":
-        if project_form.validate() and "photo" in request.files:
-            filename = photos.save(request.files["photo"])
-            index = (db.session.query(db.func.max(Project.index)).scalar() or 0) + 1
-            project = Project(title=request.form["title"],
-                              imgfile=filename,
-                              website=request.form["website"],
-                              github_url=request.form["github_url"],
-                              abandoned=request.form.get(
-                                  "abandoned") is not None,
-                              description=request.form["description"],
-                              long_desc=request.form["long_desc"],
-                              index=index)
-            db.session.add(project)
-            db.session.commit()
-            flash("Project was created.")
-            return redirect(url_for("portfolio._portfolio"))
-        else:
-            flash("Project creation failed.")
-
-    return render_template("edit_project.html",
-                           form=project_form,
-                           title="Create Projects",
-                           right=random.choice(rights),
-                           new=True)
-
-
-@portfolio.route("/edit/<string:title>", methods=["GET", "POST"])
-@login_required
-def edit_project(title):
-    from server import db
-    from server.models import Project
-    from server.forms import ProjectForm
-
-    project = Project.query.filter_by(title=title).first()
-    if not project:
-        abort(404)
-    project_form = ProjectForm(obj=project)
-
-    if request.method == "POST":
-        if project_form.validate():
-            project_form.populate_obj(project)
-            db.session.commit()
-            flash("Edit was successful.")
-            return redirect(url_for("portfolio._portfolio"))
-        else:
-            flash("Project editing failed.")
-
-    return render_template("edit_project.html",
-                           form=project_form,
-                           title="Edit Projects",
-                           right=random.choice(rights))
-
-
-@portfolio.route("/delete/<string:title>")
-@login_required
-def delete_project(title):
-    from server import db
-    from server.models import Project
-
-    project = Project.query.filter_by(title=title).first()
-    if not project:
-        abort(404)
-    image_path = os.path.join(os.path.dirname(__file__),
-                              "static", "images", project.imgfile)
-    if os.path.exists(image_path):
-        os.unlink(image_path)
-    db.session.delete(project)
-    db.session.commit()
-
-    flash("Delete was successful.")
-    return redirect(url_for("portfolio._portfolio"))
-
-
-@portfolio.route("/moveup/<int:index>")
-@login_required
-def moveup_project(index):
-    from server import db
-    from server.models import Project
-
-    this_project = Project.query.filter_by(index=index).first()
-    next_project = Project.query.filter(
-        Project.index < this_project.index).order_by(
-            Project.index.desc()).first()
-
-    if not this_project:
-        abort(404)
-    if next_project:
-        temp = this_project.index
-        this_project.index = next_project.index
-        next_project.index = temp
-        db.session.commit()
-        flash("Move was successful.")
-
-    return redirect(url_for("portfolio._portfolio"))
-
-
-@portfolio.route("/logout")
+@main.route("/logout")
 @login_required
 def logout():
     logout_user()
     flash("Logged out.")
-    return redirect(url_for("portfolio.home"))
+    return redirect(url_for("main.home"))
 
 
 def _is_safe_url(target):
@@ -215,25 +116,254 @@ def _handle_login():
     else:
         msg = "Login Failed."
     flash(msg)
-    return redirect(next or url_for("portfolio.home"))
+    return redirect(next or url_for("main.home"))
 
 
-@portfolio.errorhandler(404)
-def handle_404(e):
-    return render_template("error.html",
-                           error=e,
-                           status=404), 404
+#################################################################
+# ----------------------- PORTFOLIO BLUEPRINT -------------------
+#################################################################
+portfolio = Blueprint("portfolio", __name__, template_folder="templates")
 
 
-@portfolio.errorhandler(403)
-def handle_403(e):
-    return render_template("error.html",
-                           error=e,
-                           status=403), 403
+@portfolio.route("/projects/<string:title>", methods=["GET", "POST"])
+def projects_view(title):
+    from server.models import Project
+    if request.method == "POST":
+        return _handle_login()
+    project = Project.query.filter_by(title=title).first()
+    if not project:
+        abort(404)
+    return render_template("project.html",
+                           title=project.title,
+                           project=project,
+                           right=random.choice(rights))
 
 
-@portfolio.errorhandler(500)
-def handle_500(e):
-    return render_template("error.html",
-                           error="Internal Server Error",
-                           status=500), 500
+#pylint: disable=E1101
+@portfolio.route("/new", methods=["GET", "POST"])
+@login_required
+def new_project():
+    from server import db
+    from server.models import Project
+    from server.forms import ProjectForm
+
+    project_form = ProjectForm()
+    if request.method == "POST":
+        if project_form.validate() and "photo" in request.files:
+            filename = photos.save(request.files["photo"])
+            index = (db.session.query(db.func.max(Project.index)).scalar() or 0) + 1
+
+            project = Project(title=request.form["title"],
+                              imgfile=filename,
+                              website=request.form["website"],
+                              github_url=request.form["github_url"],
+                              abandoned=request.form.get(
+                                  "abandoned") is not None,
+                              description=request.form["description"],
+                              long_desc=request.form["long_desc"],
+                              index=index)
+
+            db.session.add(project)
+            db.session.commit()
+            flash("Project was created.")
+            return redirect(url_for("main._portfolio"))
+        else:
+            flash("Project creation failed.")
+
+    return render_template("edit_form.html",
+                           form=project_form,
+                           title="Create Projects",
+                           right=random.choice(rights),
+                           new=True)
+
+
+@portfolio.route("/edit/<string:title>", methods=["GET", "POST"])
+@login_required
+def edit_project(title):
+    from server import db
+    from server.models import Project
+    from server.forms import ProjectForm
+
+    project = Project.query.filter_by(title=title).first()
+    if not project:
+        abort(404)
+    project_form = ProjectForm(obj=project)
+
+    if request.method == "POST":
+        if project_form.validate():
+            project_form.populate_obj(project)
+            db.session.commit()
+            flash("Edit was successful.")
+            return redirect(url_for("main._portfolio"))
+        else:
+            flash("Project editing failed.")
+
+    return render_template("edit_form.html",
+                           form=project_form,
+                           title="Edit Projects",
+                           right=random.choice(rights))
+
+
+@portfolio.route("/delete/<string:title>")
+@login_required
+def delete_project(title):
+    from server import db
+    from server.models import Project
+
+    project = Project.query.filter_by(title=title).first()
+    if not project:
+        abort(404)
+    image_path = os.path.join(os.path.dirname(__file__),
+                              "static", "images", project.imgfile)
+    if os.path.exists(image_path):
+        os.unlink(image_path)
+    db.session.delete(project)
+    db.session.commit()
+
+    flash("Delete was successful.")
+    return redirect(url_for("main._portfolio"))
+
+
+@portfolio.route("/moveup/<int:index>")
+@login_required
+def moveup_project(index):
+    from server import db
+    from server.models import Project
+
+    this_project = Project.query.filter_by(index=index).first()
+    next_project = Project.query.filter(
+        Project.index < this_project.index).order_by(
+            Project.index.desc()).first()
+
+    if not this_project:
+        abort(404)
+    if next_project:
+        temp = this_project.index
+        this_project.index = next_project.index
+        next_project.index = temp
+        db.session.commit()
+        flash("Move was successful.")
+
+    return redirect(url_for("main._portfolio"))
+
+
+#################################################################
+# ----------------------- BLOG BLUEPRINT ------------------------
+#################################################################
+blog = Blueprint("blog", __name__, template_folder="templates")
+
+
+@blog.route("/blogpost/<string:title>", methods=["GET", "POST"])
+def blogpost_view(title):
+    from server.models import Blogpost
+    if request.method == "POST":
+        return _handle_login()
+    blogpost = Blogpost.query.filter_by(title=title).first()
+    if not blogpost:
+        abort(404)
+    return render_template("blogpost.html",
+                           title=blogpost.title,
+                           blogpost=blogpost,
+                           right=random.choice(rights))
+
+
+@blog.route("/new_post", methods=["GET", "POST"])
+@login_required
+def new_blogpost():
+    from server import db
+    from server.models import Blogpost
+    from server.forms import BlogpostForm
+
+    blogpost_form = BlogpostForm()
+    if request.method == "POST":
+        if blogpost_form.validate() and "photo" in request.files:
+            filename = photos.save(request.files["photo"])
+            index = (db.session.query(db.func.max(Blogpost.index)).scalar() or 0) + 1
+
+            blogpost = Blogpost(title=request.form["title"],
+                                imgfile=filename,
+                                markdown=request.form["markdown"],
+                                index=index)
+
+            db.session.add(blogpost)
+            db.session.commit()
+            flash("Blogpost was created.")
+            return redirect(url_for("main._blog"))
+        else:
+            flash("Blogpost creation failed.")
+
+    return render_template("edit_form.html",
+                           form=blogpost_form,
+                           title="Create Blogposts",
+                           right=random.choice(rights),
+                           new=True)
+
+
+@blog.route("/edit_post/<string:title>", methods=["GET", "POST"])
+@login_required
+def edit_blogpost(title):
+    from server import db
+    from server.models import Blogpost
+    from server.forms import BlogpostForm
+
+    blogpost = Blogpost.query.filter_by(title=title).first()
+    if not blogpost:
+        abort(404)
+    blogpost_form = BlogpostForm(obj=blogpost)
+
+    if request.method == "POST":
+        if blogpost_form.validate():
+            blogpost_form.populate_obj(blogpost)
+            db.session.commit()
+            flash("Edit was successful.")
+            return redirect(url_for("main._blog"))
+        else:
+            flash("Blogpost editing failed.")
+
+    return render_template("edit_form.html",
+                           form=blogpost_form,
+                           title="Edit Blogposts",
+                           right=random.choice(rights))
+
+
+@blog.route("/delete_post/<string:title>", methods=["GET", "POST"])
+@login_required
+def delete_blogpost(title):
+    from server import db
+    from server.models import Blogpost
+
+    blogpost = Blogpost.query.filter_by(title=title).first()
+    if not blogpost:
+        abort(404)
+    image_path = os.path.join(os.path.dirname(__file__),
+                              "static", "images", blogpost.imgfile)
+    if os.path.exists(image_path):
+        os.unlink(image_path)
+    db.session.delete(blogpost)
+    db.session.commit()
+
+    flash("Delete was successful.")
+    return redirect(url_for("main._blog"))
+
+
+@blog.route("/moveup_post/<int:index>", methods=["GET", "POST"])
+@login_required
+def moveup_blogpost(index):
+    from server import db
+    from server.models import Blogpost
+
+    this_blogpost = Blogpost.query.filter_by(index=index).first()
+    next_blogpost = Blogpost.query.filter(
+        Blogpost.index < this_blogpost.index).order_by(
+            Blogpost.index.desc()).first()
+
+    if not this_blogpost:
+        abort(404)
+    if next_blogpost:
+        temp = this_blogpost.index
+        this_blogpost.index = next_blogpost.index
+        next_blogpost.index = temp
+        db.session.commit()
+        flash("Move was successful.")
+
+    return redirect(url_for("main._blog"))
