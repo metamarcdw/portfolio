@@ -7,6 +7,7 @@ from flask_wtf.csrf import CSRFProtect
 from flask_login import LoginManager
 from flask_images import Images
 from flask_uploads import UploadSet, configure_uploads, IMAGES
+from flask_misaka import Misaka
 
 db = SQLAlchemy()
 migrate = Migrate(db=db)
@@ -14,6 +15,7 @@ csrf = CSRFProtect()
 login = LoginManager()
 images = Images()
 photos = UploadSet("photos", IMAGES)
+md = Misaka()
 
 
 @login.user_loader
@@ -43,6 +45,7 @@ def create_app():
     login.init_app(app)
     images.init_app(app)
     configure_uploads(app, photos)
+    md.init_app(app)
 
     #pylint: disable=W0612
     @app.shell_context_processor
