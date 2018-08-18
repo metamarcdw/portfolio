@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect
@@ -54,6 +54,32 @@ def create_app():
             "User": User
         }
 
-    from server.routes import portfolio
+    @app.template_filter("datetime")
+    def format_datetime(value, format="%d %b %Y %I:%M %p"):
+        if value is None:
+            return ""
+        return value.strftime(format)
+
+    @app.errorhandler(404)
+    def handle_404(e):
+        return render_template("error.html",
+                               error=e,
+                               status=404), 404
+
+    @app.errorhandler(403)
+    def handle_403(e):
+        return render_template("error.html",
+                               error=e,
+                               status=403), 403
+
+    @app.errorhandler(500)
+    def handle_500(e):
+        return render_template("error.html",
+                               error="Internal Server Error",
+                               status=500), 500
+
+    from server.routes import main, portfolio, blog
+    app.register_blueprint(main)
     app.register_blueprint(portfolio)
+    app.register_blueprint(blog)
     return app
