@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block bodyblock %}
+<div class="card d-flex align-items-center">
+    <img
+        class="card-img-top mycard"
+        src="{{ url_for('images', filename=blogpost.imgfile, width=300) }}"
+        alt="Card image cap">
+    <div class="card-body">
+        <h5 class="card-title">{{ blogpost.title|replace("-", " ") }}</h5>
+        <sub>{{ blogpost.date|datetime }}</sub>
+        <p class="card-text">{{ blogpost.markdown|markdown }}</p>
+        <a
+            href="#"
+            class="card-link"
+            id="backlink"
+        ><i class="fas fa-arrow-left"></i> Go Back</a>
+    </div>
+</div>
+{% endblock %}
