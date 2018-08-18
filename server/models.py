@@ -8,7 +8,7 @@ from server import db
 #pylint: disable=E1101
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    index = db.Column(db.Integer, autoincrement=True)
+    index = db.Column(db.Integer, autoincrement=True, nullable=False)
     title = db.Column(db.String(30),
                       unique=True,
                       nullable=False,
@@ -35,10 +35,11 @@ class User(db.Model, UserMixin):
 
 class Blogpost(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    index = db.Column(db.Integer, autoincrement=True, nullable=False)
     title = db.Column(db.String(30),
                       unique=True,
                       nullable=False,
-                      info={"validators": Regexp("[A-Za-z0-9-_]*$")})
+                      info={"validators": Regexp("^[A-Za-z0-9_-]*$")})
     imgfile = db.Column(db.String(30), nullable=False)
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     markdown = db.Column(db.Text, nullable=False)
