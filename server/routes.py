@@ -31,7 +31,7 @@ rights = [
 @portfolio.route("/", methods=["GET", "POST"])
 def home():
     if request.method == "POST":
-        return handle_login()
+        return _handle_login()
     user = "MarcDW" if current_user.is_authenticated else "Guest"
     flash(f"<!-- TODO: Welcome {user}. Thanks for visiting. -->")
     return render_template("home.html",
@@ -43,7 +43,7 @@ def home():
 def _portfolio():
     from server.models import Project
     if request.method == "POST":
-        return handle_login()
+        return _handle_login()
     projects = Project.query.all()
     projects.sort(key=lambda p: p.index)
     return render_template("portfolio.html",
@@ -56,7 +56,7 @@ def _portfolio():
 def projects_view(title):
     from server.models import Project
     if request.method == "POST":
-        return handle_login()
+        return _handle_login()
     project = Project.query.filter_by(title=title).first()
     if not project:
         abort(404)
@@ -69,7 +69,7 @@ def projects_view(title):
 @portfolio.route("/contact", methods=["GET", "POST"])
 def contact_view():
     if request.method == "POST":
-        return handle_login()
+        return _handle_login()
     return render_template("contact.html",
                            title="Contact Me",
                            contact=contact_info,
@@ -190,7 +190,7 @@ def logout():
     return redirect(url_for("portfolio.home"))
 
 
-def is_safe_url(target):
+def _is_safe_url(target):
     # http://flask.pocoo.org/snippets/62/
     ref_url = urlparse(request.host_url)
     test_url = urlparse(urljoin(request.host_url, target))
@@ -198,7 +198,7 @@ def is_safe_url(target):
         ref_url.netloc == test_url.netloc
 
 
-def handle_login():
+def _handle_login():
     next = None
     username_input = request.form["username_input"]
     password_input = request.form["password_input"]
@@ -207,9 +207,9 @@ def handle_login():
     if superuser and check_password_hash(superuser.password_hash, password_input):
         login_user(superuser)
 
-        # is_safe_url should check if the url is safe for redirects.
+        # _is_safe_url should check if the url is safe for redirects.
         next = request.form.get("next")
-        if not is_safe_url(next):
+        if not _is_safe_url(next):
             return abort(400)
         msg = "Login Successful."
     else:
