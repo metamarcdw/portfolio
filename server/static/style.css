@@ -8,6 +8,7 @@
 
 .navgroup {
     min-width: 60%;
+    max-width: 80%;
 }
 
 .navlink {
@@ -60,6 +61,10 @@
     right: 1em;
 }
 
+.fixed a {
+    margin: 0.1em;
+}
+
 .form-container {
     margin-top: 2em;
     margin-bottom: 2em;
@@ -73,28 +78,13 @@
     margin: 3em;
 }
 
-.btn-margin {
-    margin-top: 0.3em;
+#btn-login {
+    display: none;
 }
 
-@media screen and (max-width: 995px) {
-    .small-stack {
+@media screen and (max-width: 767px) {
+    .fixed {
         display: flex;
         flex-direction: column;
-    }
-
-    .small-mtop {
-        margin-top: 0.5em;
-    }
-
-    .grow-nav {
-        min-height: 6em;
-    }
-}
-
-@media screen and (max-width: 995px) and (min-width: 555px) {
-    .shrink-link {
-        margin-left: 0px;
-        margin-right: 0px;
     }
 }
