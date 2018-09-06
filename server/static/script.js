@@ -1,22 +1,34 @@
 
-$(function() {
-    $("#backlink").on("click", function() {
+var backlink = document.getElementById('backlink');
+if (backlink) {
+    backlink.addEventListener('click', function() {
         window.location.href = document.referrer;
     });
+}
 
-    $(".delete-btn").on("click", function() {
-        return window.confirm("Are you sure?");
+var deleteButtons = document.getElementsByClassName('delete-btn');
+if (deleteButtons) {
+    Array.prototype.forEach.call(deleteButtons, function(button) {
+        button.addEventListener('click', function(e) {
+            if (!window.confirm('Are you sure?'))
+                e.preventDefault();
+        });
     });
+}
 
-    var element = $(".simplemde")[0];
-    if (element) {
-        var simplemde = new SimpleMDE({element});
-    }
+var textArea = document.getElementsByClassName('simplemde')[0];
+if (textArea)
+    var simplemde = new SimpleMDE({textArea});
 
-    $(document).keypress("q", function(e) {
-        if (e.ctrlKey) {
-            $("#btn-login").fadeToggle("slow");
+document.addEventListener('keypress', function(e) {
+    if (e.ctrlKey && e.key === 'q') {
+        var loginBtn = document.getElementById('btn-login');
+        if (loginBtn) {
+            if (loginBtn.classList.contains('hidden')) {
+                loginBtn.classList.remove('hidden');
+            } else {
+                loginBtn.classList.add('hidden');
+            }
         }
-    });
-
+    }
 });

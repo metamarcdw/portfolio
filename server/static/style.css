@@ -19,8 +19,8 @@
     text-align: center;
 }
 
-.navlink:hover {
-    color: gray !important;
+nav .navgroup .navlink:hover {
+    color: gray;
 }
 
 .name {
@@ -78,8 +78,13 @@
     margin: 3em;
 }
 
-#btn-login {
-    display: none;
+.fade-fast {
+    opacity: 1;
+    transition: opacity .5s ease;
+}
+
+.hidden {
+    opacity: 0;
 }
 
 @media screen and (max-width: 767px) {
